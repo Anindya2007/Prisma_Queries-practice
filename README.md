@@ -67,7 +67,24 @@ Create a new model named `Profile` with:
 The new schema requires fresh data because posts must now belong to users. Follow these steps in order.
 Also, make sure your DATABASE_URL is updated correctly. 
 
-### A. Reset the Existing Database
+### A. Update .evn file with correct DATABASE_URL
+
+```bash
+DATABASE_URL="postgresql://<username>@localhost:5432/<database>"
+```
+
+Replace username with your Postgres user name and database with your database name.
+
+### B. Install all dependencies 
+
+```bash
+npm install
+```
+
+This will install all the dependencies mentioned in package.json.
+
+
+### C. Reset the Existing Database
 
 ```bash
 npx prisma migrate reset
@@ -75,7 +92,7 @@ npx prisma migrate reset
 
 **Warning:** This permanently deletes the existing data in the database being reset. Use only your development database.
 
-### B. Create and Apply the New Migration
+### D. Create and Apply the New Migration
 
 ```bash
 npx prisma migrate dev --name add_relations
@@ -83,13 +100,13 @@ npx prisma migrate dev --name add_relations
 
 This creates and applies a migration for your schema changes.
 
-### C. Generate Prisma Client
+### E. Generate Prisma Client
 
 ```bash
 npx prisma generate
 ```
 
-### D. Seed the Database
+### F. Seed the Database
 
 ```bash
 npx prisma db seed

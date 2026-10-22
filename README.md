@@ -13,20 +13,7 @@ In this lab, you will learn how to work with relationships in Prisma:
 
 ---
 
-## Step 1: Get the Latest Project
-
-Before starting, pull the latest changes from the `main` branch. The updated repository contains the new seed file.
-
-Run:
-
-```bash
-git checkout main
-git pull origin main
-```
-
----
-
-## Step 2: Update `schema.prisma`
+## Step 1: Update `schema.prisma`
 
 **File:** `prisma/schema.prisma`
 
@@ -62,7 +49,7 @@ Create a new model named `Profile` with:
 
 ---
 
-## Step 3: Reset and Migrate the Database
+## Step 2: Reset and Migrate the Database
 
 The new schema requires fresh data because posts must now belong to users. Follow these steps in order.
 Also, make sure your DATABASE_URL is updated correctly. 
@@ -118,7 +105,7 @@ You do not need to manually assign posts to users.
 
 ---
 
-## Step 4: Start the Application
+## Step 3: Start the Application
 
 Start your Express application using the command already configured in your project's `package.json`.
 

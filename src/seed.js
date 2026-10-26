@@ -1,6 +1,7 @@
 require("dotenv/config");
 
 const prisma = require("./db");
+const bcrypt = require("bcrypt");
 
 async function main() {
   // Clear existing data first
@@ -8,7 +9,7 @@ async function main() {
   await prisma.profile.deleteMany();
   await prisma.user.deleteMany();
 
-  // Create users
+  // Create users with bcrypt-hashed passwords
   await prisma.user.createMany({
     data: [
       {
@@ -16,35 +17,40 @@ async function main() {
         email: "alice@example.com",
         fullName: "Alice Johnson",
         bio: "Software Developer",
-        isPrivate: false
+        isPrivate: false,
+        password: await bcrypt.hash("password123", 10)
       },
       {
         username: "bob",
         email: "bob@example.com",
         fullName: "Bob Smith",
         bio: "UI Designer",
-        isPrivate: true
+        isPrivate: true,
+        password: await bcrypt.hash("password123", 10)
       },
       {
         username: "charlie",
         email: "charlie@example.com",
         fullName: "Charlie Brown",
         bio: "Photographer",
-        isPrivate: false
+        isPrivate: false,
+        password: await bcrypt.hash("password123", 10)
       },
       {
         username: "david",
         email: "david@example.com",
         fullName: "David Wilson",
         bio: "Backend Developer",
-        isPrivate: false
+        isPrivate: false,
+        password: await bcrypt.hash("password123", 10)
       },
       {
         username: "emma",
         email: "emma@example.com",
         fullName: "Emma Davis",
         bio: "Travel Blogger",
-        isPrivate: true
+        isPrivate: true,
+        password: await bcrypt.hash("password123", 10)
       }
     ]
   });
@@ -163,4 +169,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-

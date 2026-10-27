@@ -22,11 +22,12 @@ model User {
   isPrivate Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   password String    
 
   posts         Post[]
   profile       Profile?
-}
+
 
 model Post {
   id        Int      @id @default(autoincrement())

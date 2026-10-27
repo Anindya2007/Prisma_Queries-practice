@@ -22,27 +22,30 @@ model User {
   isPrivate Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  posts Post[]
-  profile Profile?
-}
+
+  password String    
+
+  posts         Post[]
+  profile       Profile?
+
 
 model Post {
   id        Int      @id @default(autoincrement())
+  userId Int
   imageUrl  String
   caption   String?
   location  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId Int
-  user User @relation(fields: [userId], references: [id] , onDelete: Cascade)
-}
 
-model Profile {
-  id Int @id @default(autoincrement())
-  bio String 
-  userId Int @unique 
-  user User @relation(fields: [userId] , references: [id] , onDelete: Cascade)
-  
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
 }
 
 
+model Profile{
+  id            Int               @id               @default(autoincrement())
+  bio           String
+  userId        Int               @unique
+
+  user          User          @relation(fields:[userId],references:[id],onDelete: Cascade)
+}

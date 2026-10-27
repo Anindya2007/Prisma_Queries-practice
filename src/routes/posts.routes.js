@@ -10,7 +10,7 @@ const prisma = require("../db");
 // POST /posts
 router.post("/", async (req, res) => {
   try {
-    const { imageUrl, caption, location , userId} = req.body;
+    const { imageUrl, caption, location ,userId} = req.body;
 
     if (!imageUrl) {
       return res.status(400).json({
@@ -23,14 +23,10 @@ router.post("/", async (req, res) => {
         imageUrl,
         caption,
         location,
-        user : {
-          connect : {
-            id : Number(userId)
-          }
-        }
+        userId,
       },
-      include : {
-        user : true
+      include:{
+        user:true
       }
     });
 

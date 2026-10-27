@@ -1,31 +1,59 @@
 const express = require("express");
 const router = express.Router();
 const prisma = require("../db");
+const bcrypt=require('bcrypt');
 
-router.post("/", async (req, res) => {
+router.post("/user", async (req, res) => {
   try {
-    const { username, email, fullName, bio, isPrivate } = req.body;
+    const { username, email, fullName, bio, isPrivate , password } = req.body;
 
-    if (!username || !email || !fullName)
-      return res.status(400).json({ error: "Required fields missing" });
+    if (!username || !email || !fullName || !password || typeof fullName!=='string' || typeof email!= 'string' || typeof username!=='string' || typeof password!=='string')
+      return res.status(409).json({ error: "Required fields missing or wrong datatype provided" });
 
     const exists = await prisma.user.findFirst({
-      where: { OR: [{ username }, { email }] }
+      where: { email:email}
     });
 
     if (exists)
       return res.status(409).json({ error: "User already exists" });
 
+    const salt=await bcrypt.genSalt(10);
+    const hashedPassword= await bcrypt.hash(password,salt);
+
     const user = await prisma.user.create({
-      data: { username, email, fullName, bio, isPrivate }
+      data: { username, email, fullName, bio, isPrivate , password:hashedPassword}
     });
 
-    res.status(201).json(user);
+    if (!user){
+      return res.status(404).json({message:"Some internal error occured"})
+    }
+
+    return res.status(201).json({message:"User regustered successfully",user:{
+      id:user.id,
+      username:user.username,
+      email:user.email,
+      fullName:user.fullName,
+      bio:user.bio,
+      isPrivate:user.isPrivate
+    }});
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
+router.post('/user/login',async(req,res)=>{
+  try{
+    const {email,password}=req.body;
+
+    if (!email || !password || typeof email!=='string' || typeof password!=='string'){
+    return res.status(409).json({ error: "Required fields missing or wrong datatype provided" })
+  }
+
+    
+  }
+  catch (err){}
+})  
 
 router.get("/", async (req, res) => {
   try {
